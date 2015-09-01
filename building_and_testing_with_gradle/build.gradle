@@ -1,0 +1,68 @@
+apply plugin: 'java'
+
+task hello << {
+	print 'hello,'
+}
+
+task world(dependsOn: hello) << {
+    println 'world'
+}
+
+task setupDatabase << {
+    println 'load test data'
+}
+
+setupDatabase {
+   doFirst {
+   }
+   doLast {
+   }
+}
+
+setupDatabase.onlyIf {
+    System.properties['load.data'] == 'true'
+}
+
+task emailMe(dependsOn: compileJava) << {
+    if(tasks.compileJava.didWork) {
+        println 'SEND EMAIL ANNOUNCING SUCCESS'
+    }
+}
+
+emailMe.enabled = false
+
+task echoMyPath << {
+    println "This task's path is ${path}"
+}
+
+task logLevel << {
+   def levels = ['DEBUG',
+                 'INFO',
+                 'LIFECYCLE','QUIET','WARN','ERROR']
+   levels.each {level->
+       logging.level = level
+       def logMessage = "SETTING LogLevel=${level}"
+       logger.error logMessage
+       logger.error '-' * logMessage.size()
+       logger.debug 'DEBUG ENABLED'
+       logger.info 'INFO UNABLED'
+       logger.lifecycle 'LIFECYCLE ENABLED'
+       logger.warn 'WARN ENABLED'
+       logger.quiet 'QUIET ENABLED'
+       logger.error 'ERROR ENABLED'
+       println 'THIS IS println OUTPUT'
+       logger.error ' '
+   }
+}
+
+task helloworld(description: 'Say hello to the world') << {
+	println 'hello world!'
+}
+
+helloworld {
+   description = 'Say some hello to the world'
+}
+
+helloworld.description = 'Say shit to you!'
+
+

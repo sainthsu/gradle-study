@@ -1,0 +1,76 @@
+task hello << {
+   String greeting = "hello from Ant"
+   ant.echo(greeting)
+}
+
+task checkTheStyle << {
+	ant.taskdef(resource: 'checkstyle.properties') {
+        classpath {
+             fileset(dir: 'libs/checkstyle',include: '*.jar')
+        }
+    }
+
+     ant.checkstyle(config: 'src/tools/sun_checks.xml') {
+         fileset(dir: 'src')
+     }
+}
+
+configurations {
+    myPmd
+}
+
+dependencies {
+    myPmd group:'pmd', name: 'pmd', version: '4.2.5'
+}
+
+repositories {
+    mavenCentral()
+}
+
+task checkThePMD << {
+	ant.taskdef(name: 'myPmdTask',classname: 'net.sourceforge.pmd.ant.PMDTask',
+        classpath: configurations.myPmd.asPath)
+    ant.myPmdTask(shortFilenames: 'true', failonruleviolation: 'true',
+        rulesetfiles: file('src/tools/pmd-basic-rules.xml').toURI().toString()) {
+            formatter(type: 'text'. toConsole: 'true')
+            fileset(dir: 'src/main/java')
+    }
+}
+
+task zipsourceInGradle << {
+	ant.zip(destfile: 'sample-from-gradle.zip') {
+        fileset(dir: 'samples') {
+            include(name: '**.txt')
+        }
+    }
+}
+
+ant.importBuild 'build.xml'
+
+task echoDirListViaAntBuilder() {
+	description = 'Users the built-in AntBuilder instance to echo and list files'
+    
+	//Echo the Gradle project name via the ant echo plugin
+    ant.echo(message: project.name)
+    ant.echo(path)
+    ant.echo("${projectDir}/sample")
+
+    //Gather list of the files in a subdirectory
+    ant.fileScanner{
+        fileset(dir: 'samples')
+    }.each {
+        println it.toString() - "${projectDir}"
+    }
+}
+
+
+task echoSystemPropertiesWithRegEx() {
+	description = "Uses Groovy's regex matching to find a match in System properties"
+    def charsToFind = 'sun'
+    println "SYSTEM PROPERTIES"
+    System.properties.each{
+         ant.echo("Does '${it}' contain '${charsToFind}': " +
+         (it ==~ ".*${charsToFind}.*"))
+    }
+}
+

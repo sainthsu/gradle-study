@@ -1,0 +1,18 @@
+apply plugin: 'java'
+
+sourceSets.main.java.srcDirs = 
+    ["src/main/java","srcAdditional/main/java"]
+
+// This add (while maintaining the default src/main/java)
+// can also be accomplished with a call:
+
+sourceSets.main.java.srcDirs 'srcAdditionalTwo/main/java'
+
+apply plugin: 'java'
+//Alternate approach 1
+//defaultTasks = ['clean', 'build']
+//Alternate approach 2
+//defaultTasks 'clean'
+//Approach 3
+defaultTasks 'clean', 'build'
+

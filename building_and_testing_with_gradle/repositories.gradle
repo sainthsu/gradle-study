@@ -1,0 +1,25 @@
+repositories {
+    mavenCentral()
+	//a custom url
+    mavenRepo(urls: 'http://repo.gradle.org/gradle/libs-release-local')
+    //an ivy repository
+    ivy {
+         name = 'ivyRepo'
+         artifactPattern "http://repo.gradleware.org/[organisation]/
+     [module]/[revision]/[artifact]-[revision].[ext]"
+    }
+    // a filesystem-based custom repo
+    add(new FileSystemResolver()) {
+          name = "repo"
+          addArtifactPattern("$rootDir/repo/[organization]/[module]-[revision].[ext]")
+          addIvyPattern("$rootDir/repo/[organization]/ivy-[module]-[revision].xml")
+          checkmodified = true
+     }
+     // a flat filesystem repo
+     // A single directory added to a custom-named repositories grouping.
+     flatDir name: 'localDiskRepo',dir:'lib'
+     //And a more convenient syntax for multiple directories added to the default grouping.
+     flatDir dirs: ['graphiclibs','guilibs']
+}
+
+

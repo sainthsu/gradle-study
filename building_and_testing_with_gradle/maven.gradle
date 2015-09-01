@@ -1,0 +1,37 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.gradleware.samples'
+// archivesBaseName is, via the java plugin, then the Maven plugin,
+// ultimately setting artifactId for the Maven POM generation
+// project.name is used by default, but is immutable
+archivesBaseName = 'sample01-barestbones'
+version = '0.0.1-SNAPSHOT'
+description ="A sample project that uses the Maven plug-in and defines many attributes."
+
+
+//Running the pom.xml generation process
+//$ gradle install
+
+
+//using configuration to control the generated POM
+
+defaultTasks = ['install']
+
+configure(install.repositories.mavenInstaller) {
+	pom.project {
+        groupId 'com.gradleware.samples'
+        artifactId 'sample02-barestbones'
+        version '0.0.1-SNAPSHOT'
+        description ='A sample project that uses the Maven plug-in
+                      and defines many attributes.'
+    }
+}
+
+//gradle build file that permits file:// repository uploads
+
+uploadArchives {
+     repositories.mavenDeployer {
+         repository(url: "file:///Users/mccm06/Doucments/Temp/scratch/mytemprepo/")
+     }
+}

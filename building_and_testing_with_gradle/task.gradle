@@ -1,0 +1,16 @@
+task copyFile(type: Copy) {
+	from 'resources'
+    into 'target'
+    include '**/*.xml','**/*.txt','**/*.properties'
+}
+
+apply plugin: 'java'
+
+task costomJar(type: Jar) {
+    manifest {
+       attributes firstKey: 'firstValue', secondKey: 'secondValue'
+    }
+    archiveName = 'hello,jar'
+    destinationDir = file("${buildDir}/jars")
+    from sourceSets.main.classes
+}

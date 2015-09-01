@@ -1,0 +1,24 @@
+apply plugin: 'java'
+apply plugin: 'maven'
+
+group = 'com.gradleware.samples'
+
+configure {
+   deployerJars
+}
+
+repositories {
+   mavenCentral()
+}
+
+dependencies {
+   deployerJars "org.apache.maven.wagon:wagon-webdav-jackrabbit:1.0-beta-7"
+}
+
+uploadArchives {
+     repositories.mavenDeployer {
+         configuration = configurations.deployerJars
+         repository(url: "http://localhost:8081/nexus/content/repositories/matthew")
+     }
+}
+
