@@ -1,0 +1,20 @@
+versionId = '1.6'
+
+/*Any string inside curly braces preceded by a dollar
+sign (${string}) is a candidate for substitution. When declaring keyword expansion
+in a copy task, you must pass a map to the expand() method (Example 1-8). The keys
+in the map will be matched to the expressions inside curly braces in the copied file,
+which will be replaced with the map’s corresponding values.
+*/
+
+task copyProductionConfig(type: Copy) {
+	from 'source'
+	include 'config.properties'
+	into 'build/war/WEB-INF/config'
+	expand([
+		databaseHostname: 'db.company.com',
+		version: versionId,
+		buildNumber: (int)(Math.random() * 1000),
+		date: new Date()
+	])
+}

@@ -1,0 +1,46 @@
+task copyPoemss(type: Copy) {
+	from 'text-files'
+	into 'build/poems'
+	exclude '**/*henley' //except the one by henley
+	include '**/sh*.txt' //include the one start by sh
+}
+
+task comlexCopy(type: Copy) {
+	from('src/main/templates') {
+		include '**/*.gtpl'
+	}
+	from('i18n')
+	from('config') {
+		exclude 'Development*.groovy'
+	}
+	into 'build/resources'
+}
+
+task complexCopy(type: Copy) {
+	from('src/main/templates') {
+		include '**/*/gtpl'
+		into 'templates'
+	}
+	from('i18n')
+	from('config') {
+		exclude 'Development*.groovy'
+		into 'config'
+	}
+	into 'build/resource'
+}
+
+task rename(type: Copy) {
+	from 'source'
+	into 'dest'
+	rename(/file-template-(\d+)/, 'prodection-file-$1.txt')
+}
+
+
+task rename(type: Copy) {
+	from 'source'
+	into 'dest'
+	rename { fileName -> 
+	   "prodection-file${(fileName - 'file-template')}"
+	}
+}
+

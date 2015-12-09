@@ -1,0 +1,22 @@
+task naiveFileLister {
+	doLast {
+		printfln fileTree('src/main/java').files
+	}
+}
+
+//printing out all of the compile-time dependencies of the build as a path-like string
+
+println configurations.compile.asPath
+
+task run(type: JavaExec) {
+	main = 'org.gradle.example.PoetryEmitter'
+	classpath = configuration.compile + sourceSets.main.output
+}
+
+def poems = fileTree(dir: 'src/main.resource', include: '*.txt')
+def romantics = fileTree(dir: 'src/main/resource', include: 'shelley')
+def goodPoems = poems - romantics
+
+println sourceSets.main.allSource.files
+println sourceSets.main.output.files
+

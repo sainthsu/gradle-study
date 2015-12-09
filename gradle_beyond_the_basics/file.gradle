@@ -1,0 +1,23 @@
+/**
+If you already have a File object, the file() method will attempt to convert it into a
+project-relative path in the same way. The construction new File('build/jar') has
+no defined parent directory, so file(new File('build/jar')) will force its parent to
+the build’s project root directory.
+*/
+
+jar {
+	destinationDir = file('build/jar')
+}
+
+def noBackups = fileTree('src/main/java') {
+	exclude '**/*~'
+}
+
+def xmlFilesOnly = fileTree('src/main/java') {
+	include '**/*.xml'
+}
+
+//Using fileTree() with includes and excludes given in a map literal
+def noBackups = fileTree(dir: 'src/main/java', excludes: ['**/*~'])
+def xmlFilesOnly = fileTree(dir: 'src/main/java', includes: ['**/*.xml'])
+

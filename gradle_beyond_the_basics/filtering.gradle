@@ -1,0 +1,40 @@
+import com.petebevin.markdown.MarkdownProcessor
+
+buildscritp {
+   repositories {
+	mavenRepo url: 'http://scala-tools.org/repo-releases'
+   }
+   dependencies {
+       classpath 'org.markdownj:markdownj:0.3.0-1.0.2b4'
+   }	
+}
+
+task markdown(type: Copy) {
+	def markdownProcessor = new MarkdownProcessor()
+	into 'build/poems'
+	from 'source'
+	include 'todo.md'
+	rename { it - '.md' + '.html'}
+	filter { line ->
+		markdownProcessor.markdown(line)
+	}
+}
+
+//Instead of passing a closure to the filter() method, we can pass a class instead. The
+class must be an instance of java.io.FilterReader.
+
+import org.apache.tools.ant.filters.*
+
+class MarkdownFilter extends FilterReader {
+	markdownFilter(Reader input) {
+		super(new StringReader(new MarkdownProcessor().markdown(input.text))))
+	}
+}
+
+task copyPoem(type: Copy) {
+	into 'build/poems'
+	from 'source'
+	include 'todo.md'
+	rename { it - ~/\.md$/ + '.html'}
+	filter MarkdownFilter
+}
