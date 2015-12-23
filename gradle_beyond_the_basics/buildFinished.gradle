@@ -1,0 +1,21 @@
+//A build that runs to completion without throwing an exception is considered successful. This status
+//is reflected in the buildFinished() closure through the BuildResult instance passed to it
+
+
+/** Hooking the build finished event */
+gradle.buildFinished { buildResult ->
+	println "BUILD FINISHED"
+	println "build failure - " + buildResult.failure
+}
+
+task succeed {
+	doLast {
+		println "hello world"
+	}
+}
+
+task fail {
+	doLast {
+		throw new Exception("Build failed")
+	}
+}

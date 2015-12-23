@@ -1,0 +1,30 @@
+afterEvaluate {
+	if(file('grammars').isDirectory()) {
+		println "'grammars' directory found"
+		task testGrammars << {
+		println "Running grammar test"
+		}
+	} else {
+		println "'grammars' directory not found"
+	}
+}
+
+task helloWorld {
+	doLast {
+		println "hello,world"
+	}
+}
+
+allprojects {
+	beforeEvaluate {
+		if(project.file('grammars').isDirectory()) {
+			println "'grammars' found in ${project.name}"
+			task testGrammars << {
+				println "Running grammar tests in ${project.name}"
+			}
+		} else {
+			println "'grammars' not found in ${project.name}"
+		}
+	}
+}
+

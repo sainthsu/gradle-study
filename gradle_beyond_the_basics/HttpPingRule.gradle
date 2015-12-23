@@ -1,0 +1,3 @@
+import org.gradle.examples.rules.HttpPingRule
+
+task.addRule(new HttpPingRule(project))
