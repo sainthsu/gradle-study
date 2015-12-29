@@ -1,0 +1,38 @@
+apply 'groovy'
+
+dependencies {
+	compile group: 'org.apache.solr', name: 'solr-core' version: '1.4.1'
+	testCompile group: 'juint', name: 'juint', version: '4.8'
+	// declaring dynamic dependencies
+	compile 'org.springframework:spring-core:3.0.+'
+	//file dependencies
+	compile files('lib/hacked-vendor-module.jar')
+	compile fileTree('lib')
+	// project dependencies
+	compile project(':codec')
+	//declaring an explicit configuration dependencies on a subproject
+	compile project(path: ':codec', configuration: 'published')
+	//internal dependencies
+	compile gradleApi()
+	groovy 'org.codehaus.groovy:groovy:2.0.5'
+	groovy localGroovy();
+}
+
+dependencies {
+	comile('org.springframework:spring-core:3.0.6') {
+		transitive = false
+	}
+}
+
+dependencies {
+	compile('org.springframework:spring-core:3.0.6.REALEASE') {	
+		force = true
+	}
+}
+
+dependencies {
+	compile('org.springframework:spring-core:3.0.6.REALEASE') {	
+		exclude name: 'commons-logging'
+	}
+}
+

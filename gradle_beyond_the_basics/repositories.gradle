@@ -1,0 +1,55 @@
+repositories {
+	mavenCentral();
+	maven {
+		url = 'http://download.java.net/maven/2'
+	}
+	maven {
+		name = 'JBoss Repo'
+		url = 'https://repositories.jboss.org/nexus/content/repositories/releases'
+	}
+
+	//overriding artifacts for an internal repo
+	maven {
+		url = 'http://central.megacorp.com/main/repo'
+		artifactUrls = [ 'http:/dept.megacorp/maven/local/repo' ]
+	}
+	//Obtain maven 	central artifacts locally
+	mavenCentral artifactsUrls: [ 'http:/dept.megacorp/maven/local/repo' ]
+	//resolving dependencies against the ~/.m2 Maven cache
+	mavenLocal()
+
+
+	ivy {
+		url 'http://build.megacorp.com/ivy/repo'
+	}
+
+	ivy {
+		url 'http://build.megacorp.com/ivy/repo'
+		layout 'custom', {
+			artifact "artfacts/[module]/[revision]/[artifact].[ext]"
+			ivy "ivy/[module]/[revision]/ivy.xml"
+		}
+	}
+	//declaring an Ivy repository using custom artifact and ivy.xml URLs
+	ivy {
+		artifactPattern "http://build.megacorp.com/ivy/repo/artifacts/[organisation]/[module]/[revision]/[artifact]-[revision].[ext]"
+		ivyPattern "http://build.megacorp.com/ivy/repo/ivy-xml/[organisation]/[module]/[revision]/ivy.xml"
+	}
+
+	//add credentials to a repository declaration,insecurely
+	maven {
+		url = 'http://central.megacorp.com/main/repo'
+		credentials {
+			username 'repouser'
+			password 'badly-protected-secret'
+		}
+	}
+
+	//declaring a flat directory repository\
+	flatDir dirs: '${projectDir}/lib'
+	flatDir name: 'staticFileRepo'
+			dirs: ['${projectDir}/api-libs',
+					'${projectDir}/framework-libs']
+}
+
+

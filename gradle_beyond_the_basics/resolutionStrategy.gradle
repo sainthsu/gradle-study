@@ -1,0 +1,11 @@
+//version conflict
+configurations.all {
+	resulutionStrategy {
+		failOnVersionConflict()
+		//force to use version
+		force 'commmons-collections:commons-collections:2.1'
+		//cache expiration
+		cacheDynamicVersionsFor 1, 'hour'
+		cacheChangingModulesFor 0, 'seconds'
+	}
+}

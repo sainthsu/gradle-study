@@ -1,0 +1,11 @@
+//A Configuration is a special type of FileCollection
+
+configurations {
+	compile
+	runtime
+	testCompile.extendsFrom('compile')
+	testRuntime.extendsFrom('runtime','testCompile')
+	default.extendsFrom('runtim')
+	rumtime.extendsFrom.remove(compile)
+}
+
